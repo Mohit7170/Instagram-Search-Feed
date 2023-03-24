@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.instagramfeed.databinding.SearchIcBinding
 
-class GridAdapter(val recyclerView: RecyclerView) : RecyclerView.Adapter<GridAdapter.ViewHolder>() {
+class GridAdapter(private val recyclerView: RecyclerView) : RecyclerView.Adapter<GridAdapter.ViewHolder>() {
 
     var items = 30
 

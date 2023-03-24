@@ -10,9 +10,10 @@
    <androidx.recyclerview.widget.RecyclerView
        android:id="@+id/search_rv"
        tools:listitem="@layout/search_ic"
+       android:clipToPadding="false"
        android:layout_width="match_parent"
        android:orientation="vertical"
-       android:layout_margin="16dp"
+       android:layout_marginHorizontal="16dp"
        android:layout_height="wrap_content"/>
 
 </FrameLayout>
