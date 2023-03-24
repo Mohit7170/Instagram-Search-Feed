@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.app.instagramfeed.custom.SpannedGridLayoutManager
 import com.app.instagramfeed.databinding.ActivityMainBinding
 import com.app.instagramfeed.ui.adapter.GridAdapter
@@ -40,10 +41,10 @@ class MainActivity : AppCompatActivity() {
             0.95f // how big is default item
         )
 
-        val adapter = GridAdapter(binding.searchRv)
+        val adapter = GridAdapter(activity,binding.searchRv)
 
         binding.searchRv.apply {
-            layoutManager = manager
+            layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
             this.adapter = adapter
 
 //            addOnScrollListener(object : RecyclerView.OnScrollListener() {
