@@ -10,7 +10,7 @@ import com.app.instagramfeed.databinding.SearchIcBinding
 class GridAdapter(private val activity: Activity, private val recyclerView: RecyclerView) :
     RecyclerView.Adapter<GridAdapter.ViewHolder>() {
 
-    var items = 30
+    var items = 60
     var isLeft = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,36 +24,19 @@ class GridAdapter(private val activity: Activity, private val recyclerView: Recy
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        val params = holder.binding.tv.layoutParams
 
-//        if (position % 3 == 0) {
-//            val params = holder.binding.tv.layoutParams
-//            params.height = activity.resources.getDimensionPixelSize(R.dimen._60dp)
-//            holder.binding.tv.layoutParams = params
-//        } else {
-//            val params = holder.binding.tv.layoutParams
-//            params.height = activity.resources.getDimensionPixelSize(R.dimen._120dp)
-//            holder.binding.tv.layoutParams = params
-//        }
         if (position % 3 == 0) {
-            val params = holder.binding.tv.layoutParams
-            params.height = activity.resources.getDimensionPixelSize(R.dimen._120dp)
-            holder.binding.tv.layoutParams = params
-
-        } else if (position % 3 == 1) {
-            val params = holder.binding.tv.layoutParams
+            params.height =
+                activity.resources.getDimensionPixelSize(if (isLeft) R.dimen._120dp else R.dimen._60dp)
+            isLeft = !isLeft
+        } else if (position % 3 == 1)
+            params.height =
+                activity.resources.getDimensionPixelSize(if (isLeft) R.dimen._120dp else R.dimen._60dp)
+        else if (position % 3 == 2)
             params.height = activity.resources.getDimensionPixelSize(R.dimen._60dp)
-            holder.binding.tv.layoutParams = params
-        } else if (position % 3 == 2) {
-            val params = holder.binding.tv.layoutParams
-            params.height = activity.resources.getDimensionPixelSize(R.dimen._60dp)
-            holder.binding.tv.layoutParams = params
-        }
 
-
-//        if (position == items - 1) {
-//            addData(10)
-//            return
-//        }
+        holder.binding.tv.layoutParams = params
 
         holder.binding.apply {
             tv.text = (position + 1).toString()
@@ -62,15 +45,12 @@ class GridAdapter(private val activity: Activity, private val recyclerView: Recy
 
     override fun getItemCount(): Int = items
 
-    private fun addData(item: Int) {
-
+    fun addData(item: Int) {
         val oldItem = items
         items += item
-
         recyclerView.post {
             notifyItemRangeInserted(oldItem, item)
         }
-
     }
 
     inner class ViewHolder(val binding: SearchIcBinding) :

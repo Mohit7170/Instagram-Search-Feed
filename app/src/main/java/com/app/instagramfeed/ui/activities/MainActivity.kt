@@ -2,10 +2,9 @@ package com.app.instagramfeed.ui.activities
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.app.instagramfeed.custom.SpannedGridLayoutManager
 import com.app.instagramfeed.databinding.ActivityMainBinding
 import com.app.instagramfeed.ui.adapter.GridAdapter
 
@@ -22,45 +21,21 @@ class MainActivity : AppCompatActivity() {
 
         activity = this@MainActivity
 
-        var i = 10
-        var j = 1
+        with(binding) {
+            val adapter = GridAdapter(activity, binding.searchRv)
 
-        val manager = SpannedGridLayoutManager(
-            object : SpannedGridLayoutManager.GridSpanLookup {
-                override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
-                    // Conditions for 2x2 items
-                    Log.d(TAG, "getSpanInfo: position -- $position")
-                    return if (position % 6 == 0 || position % 6 == 4) {
-                        SpannedGridLayoutManager.SpanInfo(2, 2)
-                    } else {
-                        SpannedGridLayoutManager.SpanInfo(1, 1)
-                    }
+            searchRv.apply {
+                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                this.adapter = adapter
+            }
+
+            nsv.apply {
+                viewTreeObserver.addOnScrollChangedListener {
+                    val view = getChildAt(childCount - 1) as View
+                    val diff = view.bottom - (height + scrollY)
+                    if (diff == 0) adapter.addData(20)
                 }
-            },
-            3,  // number of columns
-            0.95f // how big is default item
-        )
-
-        val adapter = GridAdapter(activity,binding.searchRv)
-
-        binding.searchRv.apply {
-            layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-            this.adapter = adapter
-
-//            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                    super.onScrolled(recyclerView, dx, dy)
-//
-//                    Log.d(TAG, "onScrolled: recyclerView.canScrollVertically(1) -- ${recyclerView.canScrollVertically(1)}   dy -- ${dy}")
-////                    if (!recyclerView.canScrollVertically(-1) && dy < 0) {
-//                    if (!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
-//
-//                        adapter.addData(10)
-//                        Log.d(TAG, "onScrolled: BOTTOM")
-////                        recyclerView.invalidate()
-//                    }
-//                }
-//            })
+            }
         }
 
     }
