@@ -2,6 +2,7 @@ package com.app.instagramfeed.ui.activities
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.app.instagramfeed.databinding.ActivityMainBinding
@@ -20,30 +21,24 @@ class MainActivity : AppCompatActivity() {
 
         activity = this@MainActivity
 
-        val adapter = GridAdapter(activity, binding.searchRv, getItems())
-        adapter.setHasStableIds(true)
+        with(binding) {
+            val adapter = GridAdapter(activity, binding.searchRv)
 
-        val manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//        val manager = LinearLayoutManager
+            searchRv.apply {
+                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                this.adapter = adapter
+            }
 
-
-        binding.searchRv.apply {
-            layoutManager = manager
-            this.adapter = adapter
-
-
+            nsv.apply {
+                viewTreeObserver.addOnScrollChangedListener {
+                    val view = getChildAt(childCount - 1) as View
+                    val diff = view.bottom - (height + scrollY)
+                    if (diff == 0) adapter.addData(20)
+                }
+            }
         }
 
     }
-
-    private fun getItems(): MutableList<Int> {
-        val item: MutableList<Int> = mutableListOf()
-        for (i in 0..300) {
-            item.add(i)
-        }
-        return item
-    }
-
 
     companion object {
         private const val TAG = "MainActivity"

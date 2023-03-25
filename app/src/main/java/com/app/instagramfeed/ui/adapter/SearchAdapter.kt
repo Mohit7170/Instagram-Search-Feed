@@ -1,22 +1,16 @@
 package com.app.instagramfeed.ui.adapter
 
 import android.app.Activity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.instagramfeed.R
 import com.app.instagramfeed.databinding.SearchIcBinding
 
-class GridAdapter(
-    private val activity: Activity,
-    private val recyclerView: RecyclerView,
-    private val items: MutableList<Int>
-) :
+class GridAdapter(private val activity: Activity, private val recyclerView: RecyclerView) :
     RecyclerView.Adapter<GridAdapter.ViewHolder>() {
 
-
-    //    var items = 300
+    var items = 60
     var isLeft = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,89 +19,39 @@ class GridAdapter(
             parent,
             false
         )
-
-        val holder = ViewHolder(binding)
-        holder.setIsRecyclable(false)
-
-        return holder
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.setIsRecyclable(false)
-        Log.d(TAG, "onBindViewHolder: position -- ${position}")
-        try {
-//
-//            if (position == items - 1) {
-//                addData(10)
-//                return
-//            }
+        val params = holder.binding.tv.layoutParams
 
-            if (position == holder.adapterPosition && position == holder.layoutPosition) {
+        if (position % 3 == 0) {
+            params.height =
+                activity.resources.getDimensionPixelSize(if (isLeft) R.dimen._120dp else R.dimen._60dp)
+            isLeft = !isLeft
+        } else if (position % 3 == 1)
+            params.height =
+                activity.resources.getDimensionPixelSize(if (isLeft) R.dimen._120dp else R.dimen._60dp)
+        else if (position % 3 == 2)
+            params.height = activity.resources.getDimensionPixelSize(R.dimen._60dp)
 
-                val params = holder.binding.tv.layoutParams
-                params.height = activity.resources.getDimensionPixelSize(R.dimen._120dp)
+        holder.binding.tv.layoutParams = params
 
-                if (position % 3 == 0) {
-
-                    if (isLeft) {
-                        params.height = activity.resources.getDimensionPixelSize(R.dimen._120dp)
-                    } else {
-                        params.height = activity.resources.getDimensionPixelSize(R.dimen._60dp)
-                    }
-                    isLeft = !isLeft
-
-                    holder.binding.tv.layoutParams = params
-
-                } else if (position % 3 == 1) {
-                    if (isLeft) {
-                        params.height = activity.resources.getDimensionPixelSize(R.dimen._120dp)
-                    } else {
-                        params.height = activity.resources.getDimensionPixelSize(R.dimen._60dp)
-                    }
-                    holder.binding.tv.layoutParams = params
-                } else if (position % 3 == 2) {
-                    params.height = activity.resources.getDimensionPixelSize(R.dimen._60dp)
-                    holder.binding.tv.layoutParams = params
-                }
-
-                holder.binding.apply {
-                    tv.text = (position + 1).toString()
-                }
-            }
-
-        } catch (e: Exception) {
-            e.printStackTrace()
+        holder.binding.apply {
+            tv.text = (position + 1).toString()
         }
-
     }
 
-    override fun getItemId(position: Int): Long {
-//        Log.d(TAG, "getItemId: position -- ${position}")
-        return position.toLong()
+    override fun getItemCount(): Int = items
+
+    fun addData(item: Int) {
+        val oldItem = items
+        items += item
+        recyclerView.post {
+            notifyItemRangeInserted(oldItem, item)
+        }
     }
-
-    override fun getItemViewType(position: Int): Int {
-//        Log.d(TAG, "getItemViewType: position -- ${position}")
-        return position
-    }
-
-    companion object {
-        private const val TAG = "SearchAdapter"
-    }
-
-    override fun getItemCount(): Int = items.size
-
-//    fun addData(item: Int) {
-//
-//        val oldItem = items
-//        items += item
-//
-//        recyclerView.post {
-//            notifyItemRangeInserted(oldItem, item)
-//        }
-//
-//    }
 
     inner class ViewHolder(val binding: SearchIcBinding) :
         RecyclerView.ViewHolder(binding.root)
