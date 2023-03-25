@@ -7,15 +7,20 @@
     android:background="#3F51B5"
     tools:context=".ui.activities.MainActivity">
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/search_rv"
-       tools:listitem="@layout/search_ic"
-       android:clipToPadding="false"
-       android:layout_width="match_parent"
-       android:orientation="vertical"
-       app:spanCount="2"
-       app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-       android:layout_marginHorizontal="16dp"
-       android:layout_height="wrap_content"/>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/search_ic" />
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>
