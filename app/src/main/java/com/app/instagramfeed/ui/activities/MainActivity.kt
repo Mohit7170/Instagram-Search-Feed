@@ -22,9 +22,9 @@ class MainActivity : AppCompatActivity() {
         activity = this@MainActivity
 
         with(binding) {
-            val manager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+            val manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-            val adapter = GridAdapter(activity, binding.searchRv)
+            val adapter = GridAdapter(activity, getItems())
 
             searchRv.apply {
                 layoutManager = manager
@@ -35,11 +35,19 @@ class MainActivity : AppCompatActivity() {
                 viewTreeObserver.addOnScrollChangedListener {
                     val view = getChildAt(childCount - 1) as View
                     val diff = view.bottom - (height + scrollY)
-                    if (diff == 0) adapter.addData(20)
+                    val items = adapter.itemCount
+                    if (diff == 0) adapter.addData(getItems(items+1, items + 30))
                 }
             }
         }
+    }
 
+    private fun getItems(start: Int = 1, end: Int = 60): MutableList<Int> {
+        val items = mutableListOf<Int>()
+        for (i in start..end) {
+            items.add(i)
+        }
+        return items
     }
 
     companion object {
