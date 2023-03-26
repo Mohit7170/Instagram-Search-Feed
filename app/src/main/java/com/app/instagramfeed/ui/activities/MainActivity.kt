@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
         with(binding) {
             val manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
             val adapter = GridAdapter(activity, getItems())
 
             searchRv.apply {
