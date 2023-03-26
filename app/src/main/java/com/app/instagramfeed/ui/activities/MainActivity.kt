@@ -22,10 +22,12 @@ class MainActivity : AppCompatActivity() {
         activity = this@MainActivity
 
         with(binding) {
+            val manager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+
             val adapter = GridAdapter(activity, binding.searchRv)
 
             searchRv.apply {
-                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                layoutManager = manager
                 this.adapter = adapter
             }
 

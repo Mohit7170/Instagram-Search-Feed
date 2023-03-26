@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.instagramfeed.R
 import com.app.instagramfeed.databinding.SearchIcBinding
 
-class GridAdapter(private val activity: Activity, private val recyclerView: RecyclerView) :
+class GridAdapter(
+    private val activity: Activity,
+    private val recyclerView: RecyclerView,
+) :
     RecyclerView.Adapter<GridAdapter.ViewHolder>() {
 
     var items = 60
@@ -30,17 +33,46 @@ class GridAdapter(private val activity: Activity, private val recyclerView: Recy
             params.height =
                 activity.resources.getDimensionPixelSize(if (isLeft) R.dimen._120dp else R.dimen._60dp)
             isLeft = !isLeft
-        } else if (position % 3 == 1)
+
+            holder.binding.apply {
+                tv.text = (position + 1).toString()
+            }
+
+        } else if (position % 3 == 1) {
+
             params.height =
                 activity.resources.getDimensionPixelSize(if (isLeft) R.dimen._120dp else R.dimen._60dp)
-        else if (position % 3 == 2)
+
+            if (isLeft) {
+
+                holder.binding.apply {
+                    tv.text = (position + 2).toString()
+                }
+            } else {
+                holder.binding.apply {
+                    tv.text = (position + 1).toString()
+                }
+            }
+        } else if (position % 3 == 2) {
             params.height = activity.resources.getDimensionPixelSize(R.dimen._60dp)
+            holder.binding.apply {
+                tv.text = (position + 1).toString()
+            }
+
+            if (isLeft) {
+
+                holder.binding.apply {
+                    tv.text = (position).toString()
+                }
+            } else {
+                holder.binding.apply {
+                    tv.text = (position + 1).toString()
+                }
+            }
+        }
 
         holder.binding.tv.layoutParams = params
 
-        holder.binding.apply {
-            tv.text = (position + 1).toString()
-        }
     }
 
     override fun getItemCount(): Int = items
